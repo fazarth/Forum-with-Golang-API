@@ -1,0 +1,377 @@
+basePath: /api
+definitions:
+  models.CredentialsLogin:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.LOGISTIC:
+    properties:
+      active:
+        type: string
+      amount:
+        type: string
+      comment:
+        type: string
+      create_date:
+        type: string
+      create_user:
+        type: integer
+      destination_name:
+        type: string
+      duration:
+        type: string
+      logistic_id:
+        type: integer
+      logistic_name:
+        type: string
+      origin_name:
+        type: string
+      update_date:
+        type: string
+      update_user:
+        type: integer
+    type: object
+  models.RegisterUser:
+    properties:
+      msisdn:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a Api Documentation for LOLIPAD 2022 with Golang Backend, Gin
+    Gonic Framework, GORM MySQL, and JWT Authentication
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: API DOCUMENTATION - API FOR LOLIPAD 2022
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login User
+      operationId: Authentication
+      parameters:
+      - description: Input username & password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.CredentialsLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Login User
+      tags:
+      - Users
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register User
+      parameters:
+      - description: Register User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: Register User
+      tags:
+      - Users
+  /logistic:
+    get:
+      consumes:
+      - application/json
+      description: API untuk mengambil semua logistic yang terdapat dalam database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Mengambil Semua Logistic
+      tags:
+      - Logistic
+    post:
+      consumes:
+      - application/json
+      description: API untuk membuat logistic baru.
+      parameters:
+      - description: Logistic Data
+        in: body
+        name: logistic
+        required: true
+        schema:
+          $ref: '#/definitions/models.LOGISTIC'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Membuat logistic baru.
+      tags:
+      - Logistic
+  /logistic/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: API untuk delete logistic.
+      parameters:
+      - description: Logistic ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Delete logistic.
+      tags:
+      - Logistic
+    put:
+      consumes:
+      - application/json
+      description: API untuk update logistic.
+      parameters:
+      - description: Logistic Data
+        in: body
+        name: logistic
+        required: true
+        schema:
+          $ref: '#/definitions/models.LOGISTIC'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update logistic.
+      tags:
+      - Logistic
+  /logistic/bydestination:
+    get:
+      consumes:
+      - application/json
+      description: API untuk mencari logistic by ID yang terdapat dalam database.
+      parameters:
+      - description: Origin Name
+        in: path
+        name: Origin_Name
+        required: true
+        type: string
+      - description: Destination Name
+        in: path
+        name: Destination_Name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Mengambil Logistic by ID
+      tags:
+      - Logistic
+  /user/profile/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get User Profile
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get User Profile
+      tags:
+      - Users
+  /user/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update User
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Token:
+              description: qwerty
+              type: string
+          schema:
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update User
+      tags:
+      - Users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

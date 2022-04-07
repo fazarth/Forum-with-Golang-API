@@ -1,0 +1,58 @@
+version: '3.9'
+services:
+  app:
+    container_name: LOLIPAD_API
+    build: .
+    ports: 
+      - 3000:8080 
+    restart: on-failure
+    volumes:
+      - api:/usr/src/app/
+    depends_on:
+      - golang-mysql          
+    networks:
+      - LOLIPAD_NETWORK
+    environment:
+      - 'DB_PORT=3306'
+      - 'DB_HOST=golang-mysql'
+
+
+  golang-mysql:
+    image: mysql
+    container_name: MySQL_container
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=12345'
+      - 'MYSQL_DATABASE=LOLIPAD'
+    ports: 
+      - 3020:3306 
+    volumes:
+      - LOLIPAD_DB:/var/lib/mysql
+    networks:
+      - LOLIPAD_NETWORK
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: PMA_container
+    depends_on:
+      - golang-mysql
+    environment:
+      - 'PMA_HOST=golang-mysql' # Note the "golang-mysql". Must be the name of the what you used as the mysql service.
+      - 'PMA_PORT=3306'
+      - 'PMA_ARBITRARY=1'
+    ports:
+      - 3040:80
+    restart: always
+    networks:
+      - LOLIPAD_NETWORK
+
+
+volumes:
+  api:
+  LOLIPAD_DB:                  
+
+# Networks to be created to facilitate communication between containers
+networks:
+  LOLIPAD_NETWORK:
+    driver: bridge
